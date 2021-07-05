@@ -18,32 +18,39 @@ app = Flask(__name__)
 def login():
     if request.method == "GET":
         phone = request.args.get("phone")
+        print('phone=',phone)
         my_number = phonenumbers.parse(phone)
         if phonenumbers.is_possible_number(my_number) :
-            return CODE_number['code'] ,201
+            print('CODE_number[code]=',CODE_number['code'])
+            return jsonify({'code':CODE_number['code']})  ,200
         else :
-            return jsonify({'status':'dont mobile_number'}),201
+            return jsonify({'status':'dont mobile_number'}),200
     elif request.method == "POST":
         data ={'status': 'Fail'}
 
-        return  jsonify(data),201
+        return  jsonify(data),200
 
 
 @app.route('/status/',methods=["GET"])
 def get_HTML():
+    # пока работает запрос /status/
     data = {'status': 'success'}
     driver_get=webdriver.Chrome(executable_path='E:\\python_lesson_urok\\parser\\posmotrim\\chromedriver.exe') # путь до рдайвера
     global jar
     URL='https://freestylo.ru/'
+    tegs=['html','head','body','img','p']
     try:
         linkk = request.args.get("link")
         if linkk:
             URL=linkk
         tags_out = request.args.get("tags")
+        tegs_bufer=''
         if tags_out:
-            tegs=tags_out
+            tegs_bufer=tags_out
+            tegs = tuple((item) for item in tegs_bufer.split(','))
+
         tester_html=driver_get.get(url=URL)
-        tegs=['html','head','body','img','p']
+
 
         data=find_all_teg(driver_get.page_source,tegs)
 
