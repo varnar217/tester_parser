@@ -1,0 +1,6 @@
+beautifulsoup4==4.9.3
+Flask==1.1.2
+Jinja2==2.11.2
+requests==2.25.1
+phonenumbers==8.12.24
+selenium==3.141.0
